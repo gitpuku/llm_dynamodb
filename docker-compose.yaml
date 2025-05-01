@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  app:
+    container_name: FastAPI
+    build: ./backend
+    ports:
+      - "8000:80"
+    env_file:
+      - ./backend/.env # .envファイルをコンテナ内に渡す
+  frontend:
+    container_name: Nextjs
+    build: ./frontend
+    ports:
+      #左がWindows,右がdocker
+      - "3000:3000"
+  dynamodb-local:
+    image: amazon/dynamodb-local
+    ports:
+      - "9000:8000" # ホストの8002をコンテナの8000にマッピング
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data/"
+    volumes:
+      - "./dynamodb_data:/home/dynamodblocal/data"
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      - DYNAMO_ENDPOINT=http://dynamodb-local:8000
+    depends_on:
+      - dynamodb-local
