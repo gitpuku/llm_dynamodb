@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from typing import Dict
 import uuid
 import os
-# from app.db import create_table_if_not_exists, save_chat_log
+from app.db import create_table_if_not_exists, save_chat_log
 
 load_dotenv()
 
@@ -32,7 +32,7 @@ class ChatResponse(BaseModel):
     response: str
     
     
-# create_table_if_not_exists()
+create_table_if_not_exists()
 # セッションIDごとに LangGraph アプリと config を保持
 session_graphs: Dict[str, Dict] = {}
 
@@ -80,6 +80,6 @@ async def chat(chat_req: ChatRequest):
         final_response = event["messages"][-1].content
 
     # 会話をDynamoDBに保存
-    # save_chat_log(session_id, message, final_response)
+    save_chat_log(session_id, message, final_response)
 
     return {"response": final_response}
