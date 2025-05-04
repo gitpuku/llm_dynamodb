@@ -5,7 +5,7 @@ import uuid
 # ローカルDynamoDBへの接続設定
 dynamodb = boto3.resource(
     'dynamodb',
-    endpoint_url='http://localhost:9000',
+    endpoint_url='http://dynamodb-local:9000',
     region_name='us-west-2',
     aws_access_key_id='dummy',
     aws_secret_access_key='dummy'
